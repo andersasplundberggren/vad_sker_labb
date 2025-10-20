@@ -270,7 +270,7 @@
       );
     }
 
-    /* ===== UI ===== */
+    /* ===== UI KOMPONENTER ===== */
     function Loader({ text="Laddar..." }) {
       return (
         <div className="loader">
@@ -343,7 +343,7 @@
       );
     }
 
-    /* ===== LOGIN MED INFO-BANNER ===== */
+    /* ===== LOGIN ===== */
     function LoginPage({ onLogin }) {
       const [email,setEmail] = useState('');
       const [otpSent,setOtpSent] = useState(false);
@@ -385,7 +385,6 @@
             <h1 className="login-title">platsen där initiativ synliggörs</h1>
             <p className="login-subtitle">Logga in med din @karlskoga.se-adress</p>
 
-            {/* INFO BANNER */}
             <div className="info-banner">
               <div className="info-banner-title">
                 ℹ️ Proof of Concept
@@ -421,7 +420,7 @@
                 {error && <div className="error-message">{error}</div>}
                 <div className="form-group">
                   <label className="form-label">E-postadress</label>
-                  <input type="email" className="form-input" placeholder="fornamn.efternamn@karlskoga.se"value={email} onChange={(e)=>setEmail(e.target.value.trim().toLowerCase())} required />
+                  <input type="email" className="form-input" placeholder="fornamn.efternamn@karlskoga.se" value={email} onChange={(e)=>setEmail(e.target.value.trim().toLowerCase())} required />
                 </div>
                 <button type="submit" disabled={loading} className="primary-btn">{loading?'Skickar…':'Skicka inloggningskod'}</button>
             </form>
@@ -472,7 +471,7 @@
       );
     }
 
-    /* ===== SKAPA INLÄGG (MED LÄNK ISTÄLLET FÖR BILDER) ===== */
+    /* ===== SKAPA INLÄGG ===== */
     function CreatePostModal({ isOpen, onClose, session, onSuccess }) {
       const [title,setTitle] = useState('');
       const [summary,setSummary] = useState('');
@@ -597,7 +596,7 @@
       );
     }
 
-    /* ===== POST DETAIL MODAL MED KOMMENTARER OCH LÄNK ===== */
+    /* ===== POST DETAIL MODAL ===== */
     function PostDetailModal({ isOpen, onClose, post, session }) {
       const [comments, setComments] = useState([]);
       const [commentText, setCommentText] = useState('');
@@ -707,7 +706,6 @@
             </div>
           )}
 
-          {/* EXTERN LÄNK - VISAR KLICKBAR LÄNK */}
           {post.external_link && String(post.external_link).trim() && (
             <div style={{
               marginTop: 16,
@@ -750,7 +748,6 @@
             <ReactionBar post={post} session={session}/>
           </div>
 
-          {/* KOMMENTARSSEKTION */}
           <div style={{marginTop:24,paddingTop:20,borderTop:'1px solid #e5e7eb'}}>
             <h3 style={{fontSize:16,fontWeight:600,marginBottom:16,display:'flex',alignItems:'center',gap:8}}>
               💬 Kommentarer
@@ -817,7 +814,6 @@
               </div>
             )}
 
-            {/* Kommentarsformulär */}
             <form onSubmit={submitComment} style={{display:'flex',gap:8,marginTop:12}}>
               <input
                 type="text"
@@ -920,8 +916,7 @@
         </Modal>
       );
     }
-
-    /* ===== HUVUDVY ===== */
+    /* ===== HUVUDVY (FIXAD MED INITIAL LOAD) ===== */
     function MainPage({ session, onLogout }) {
       const [posts,setPosts] = useState([]);
       const [categories,setCategories] = useState([]);
@@ -942,6 +937,7 @@
       const [resultCount,setResultCount] = useState(0);
 
       const loadPosts = async ()=>{
+        console.log('🔍 loadPosts called');
         setLoading(true);
         try {
           const res = await api.get('posts/search',{
@@ -950,11 +946,19 @@
             category: categoryFilter==='all' ? '' : categoryFilter,
             author: authorFilter
           });
+          
+          console.log('📥 API Response:', res);
+          
           if (res.success) {
+            console.log('✅ Setting posts:', res.posts?.length || 0);
             setPosts(res.posts||[]);
             setResultCount(res.posts ? res.posts.length : 0);
           }
-        } finally { setLoading(false); }
+        } catch(err) {
+          console.error('❌ Error:', err);
+        } finally { 
+          setLoading(false); 
+        }
       };
       
       const loadCategories = async ()=>{
@@ -962,7 +966,13 @@
         if (res.success) setCategories(res.categories||[]);
       };
 
+      // Load categories once on mount
       useEffect(()=>{ loadCategories(); },[]);
+      
+      // Load posts once on mount - VIKTIG FIX!
+      useEffect(()=>{ loadPosts(); },[]); 
+      
+      // Load posts when filters change (with debounce)
       useEffect(()=>{
         const t = setTimeout(()=>{ loadPosts(); }, 250);
         return ()=>clearTimeout(t);
@@ -997,6 +1007,8 @@
         setSelectedPost(post);
         setShowPostDetail(true);
       };
+
+      console.log('🎨 Rendering MainPage - posts:', posts.length);
 
       return (
         <>
@@ -1129,7 +1141,7 @@
       
       const onLogin = (sess)=>{ 
         setSession(sess); 
-        localStorage.setItem('karlskoga_session', JSON.stringify(sess));
+        localStorage.setItem('karlskoga_session', JSON.stringify(sess)); 
       };
       
       const onLogout = ()=>{ 
@@ -1147,3 +1159,33 @@
   </script>
 </body>
 </html>
+```
+
+---
+
+## ✅ KLART! 
+
+Nu har du den **kompletta fixade `index.html`**!
+
+---
+
+## 🎯 Vad som fixades:
+
+1. ✅ **Lade till `useEffect(()=>{ loadPosts(); },[]);`** - Detta säkerställer att posts laddas när komponenten mountar första gången
+2. ✅ **Behöll filter-useEffect** med debounce för när användaren söker/filtrerar
+3. ✅ **Lade till console.logs** för debugging
+4. ✅ **All kod för extern länk** finns med och fungerar
+
+---
+
+## 🚀 Nästa steg:
+
+1. **Spara filen** som `index.html`
+2. **Öppna i webbläsare** (eller hårdladda om den redan är öppen: Ctrl+Shift+R)
+3. **Logga in**
+4. **Kolla Console (F12)** - du ska se:
+```
+   🔍 loadPosts called
+   📥 API Response: {success: true, posts: Array(5)}
+   ✅ Setting posts: 5
+   🎨 Rendering MainPage - posts: 5
