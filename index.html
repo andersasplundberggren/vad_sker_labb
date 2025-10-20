@@ -220,45 +220,45 @@
     function FunLoader({ interval=1400 }) {
       const lines = [
         'Brygger en prototyp på låg värme…',
-    'Itererar i 120 BPM…',
-    'Skruvar upp modet att testa…',
-    'Dammar av en vild idé…',
-    'Skarvar ihop små vinster till stor nytta…',
-    'Trycker “publish” på en beta…',
-    'Samlar in lärdomar i realtid…',
-    'Delar framgång OCH missar—transparens på!…',
-    'Sätter på innovationsglasögonen…',
-    'Knådar feedback till förbättring…',
-    'Gör det enkelt först, smart sen…',
-    'Mäter, lär, gör om…',
-    'Bjuder in fler hjärnor till bordet…',
-    'Sänker trösklar, höjer tempot…',
-    'Tjuvstartar en micro-pilot…',
-    'Vässar hypoteserna…',
-    'Trycker på “ship it” (med fallskärm)…',
-    'Skriver ner det vi just lärde oss…',
-    'Testar i liten skala—drömmer i stor…',
-    'Byter magkänsla mot mätning (och tillbaka)…',
-    'Sätter ljus på det som funkar…',
-    'Bollar idéer över disciplin-gränser…',
-    'Firar små steg framåt 🎉…',
-    'Komposterar gamla arbetssätt till ny jord…',
-    'Plockar bort onödigt krångel…',
-    'Tar bort prestige, lägger till nyfikenhet…',
-    'Sätter upp A/B/C—för säkerhets skull…',
-    'Gör en snabb skiss, vågar visa…',
-    'Öppnar upp koden—hej delningsglädje!…',
-    'Bygger tillsammans, lär tillsammans…',
-    'Städar undan “så har vi alltid gjort”…',
-    'Packar idé i MVP-format…',
-    'Värmer upp kreativiteten med en demo…',
-    'Sätter “feedback-first” i status…',
-    'Trollar fram en aha-upplevelse…',
-    'Synkar kompass: nytta, nyfikenhet, nöje…',
-    'Sänker risk, höjer lärande…',
-    'Rullar ut en trygg testmiljö…',
-    'Ger oss själva tillåtelse att prova…',
-    'Lånar bra från andra, ger tillbaka…',
+        'Itererar i 120 BPM…',
+        'Skruvar upp modet att testa…',
+        'Dammar av en vild idé…',
+        'Skarvar ihop små vinster till stor nytta…',
+        'Trycker "publish" på en beta…',
+        'Samlar in lärdomar i realtid…',
+        'Delar framgång OCH missar—transparens på!…',
+        'Sätter på innovationsglasögonen…',
+        'Knådar feedback till förbättring…',
+        'Gör det enkelt först, smart sen…',
+        'Mäter, lär, gör om…',
+        'Bjuder in fler hjärnor till bordet…',
+        'Sänker trösklar, höjer tempot…',
+        'Tjuvstartar en micro-pilot…',
+        'Vässar hypoteserna…',
+        'Trycker på "ship it" (med fallskärm)…',
+        'Skriver ner det vi just lärde oss…',
+        'Testar i liten skala—drömmer i stor…',
+        'Byter magkänsla mot mätning (och tillbaka)…',
+        'Sätter ljus på det som funkar…',
+        'Bollar idéer över disciplin-gränser…',
+        'Firar små steg framåt 🎉…',
+        'Komposterar gamla arbetssätt till ny jord…',
+        'Plockar bort onödigt krångel…',
+        'Tar bort prestige, lägger till nyfikenhet…',
+        'Sätter upp A/B/C—för säkerhets skull…',
+        'Gör en snabb skiss, vågar visa…',
+        'Öppnar upp koden—hej delningsglädje!…',
+        'Bygger tillsammans, lär tillsammans…',
+        'Städar undan "så har vi alltid gjort"…',
+        'Packar idé i MVP-format…',
+        'Värmer upp kreativiteten med en demo…',
+        'Sätter "feedback-first" i status…',
+        'Trollar fram en aha-upplevelse…',
+        'Synkar kompass: nytta, nyfikenhet, nöje…',
+        'Sänker risk, höjer lärande…',
+        'Rullar ut en trygg testmiljö…',
+        'Ger oss själva tillåtelse att prova…',
+        'Lånar bra från andra, ger tillbaka…',
       ];
       const [i,setI] = useState(() => Math.floor(Math.random()*lines.length));
       useEffect(() => { const id = setInterval(()=>setI(x => (x+1)%lines.length), interval); return ()=>clearInterval(id); }, [interval]);
@@ -421,8 +421,7 @@
                 {error && <div className="error-message">{error}</div>}
                 <div className="form-group">
                   <label className="form-label">E-postadress</label>
-                  <input type="email" className="form-input" placeholder="fornamn.efternamn@karlskoga.se"
-                    value={email} onChange={(e)=>setEmail(e.target.value.trim().toLowerCase())} required />
+                  <input type="email" className="form-input" placeholder="fornamn.efternamn@karlskoga.se"value={email} onChange={(e)=>setEmail(e.target.value.trim().toLowerCase())} required />
                 </div>
                 <button type="submit" disabled={loading} className="primary-btn">{loading?'Skickar…':'Skicka inloggningskod'}</button>
             </form>
@@ -473,13 +472,13 @@
       );
     }
 
-    /* ===== SKAPA INLÄGG (UTAN NY KATEGORI-KNAPP) ===== */
+    /* ===== SKAPA INLÄGG (MED LÄNK ISTÄLLET FÖR BILDER) ===== */
     function CreatePostModal({ isOpen, onClose, session, onSuccess }) {
       const [title,setTitle] = useState('');
       const [summary,setSummary] = useState('');
       const [text,setText] = useState('');
       const [categoryId,setCategoryId] = useState('general');
-      const [files,setFiles] = useState([]);
+      const [externalLink,setExternalLink] = useState('');
       const [categories,setCategories] = useState([]);
       const [loading,setLoading] = useState(false);
       const [error,setError] = useState('');
@@ -496,35 +495,22 @@
         }
       };
 
-      const readFileAsBase64 = (file) => new Promise((resolve,reject)=>{
-        const reader = new FileReader();
-        reader.onload = ()=>resolve(String(reader.result).split(',')[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-
       const handleSubmit = async (e) => {
         e.preventDefault();
         if (!summary.trim()) { setError('Sammanfattning krävs (max 140 tecken)'); return; }
         setLoading(true); setError('');
         try {
-          const uploads = await Promise.all((files||[]).map(async f=>{
-            const base64 = await readFileAsBase64(f);
-            return api.post('file/upload',{ session: session.sessionToken, filename: f.name, mimeType: f.type, dataBase64: base64 });
-          }));
-          const fileIds = uploads.map(up => {
-            if (!up.success) throw new Error(up.error || 'Uppladdning misslyckades');
-            return up.fileId;
-          });
-
           const result = await api.post('post/create',{
             session: session.sessionToken,
-            title, summary, text, categoryId,
-            imageFileIds: fileIds.join(',')
+            title, 
+            summary, 
+            text, 
+            categoryId,
+            externalLink: externalLink.trim()
           });
           if (!result.success) throw new Error(result.error || 'Kunde inte skapa inlägg');
 
-          setTitle(''); setSummary(''); setText(''); setCategoryId('general'); setFiles([]);
+          setTitle(''); setSummary(''); setText(''); setCategoryId('general'); setExternalLink('');
           onSuccess && onSuccess(); onClose();
         } catch (err) { setError(err.message); } finally { setLoading(false); }
       };
@@ -559,9 +545,15 @@
             </div>
 
             <div className="form-group" style={{marginTop:16}}>
-              <label className="form-label">Bilder (valfritt)</label>
-              <input type="file" accept="image/*" multiple onChange={(e)=>setFiles(Array.from(e.target.files||[]))} className="file-input"/>
-              {files.length>0 && <div className="small-muted">{files.length} fil(er) valda</div>}
+              <label className="form-label">Extern länk (valfritt)</label>
+              <input 
+                type="url" 
+                className="form-input" 
+                value={externalLink} 
+                onChange={(e)=>setExternalLink(e.target.value)} 
+                placeholder="https://exempel.se/dokument" 
+              />
+              <div className="small-muted">Lägg till en länk till dokument, webbsida eller annan resurs</div>
             </div>
 
             <div style={{display:'flex',justifyContent:'flex-end',gap:12,marginTop:20}}>
@@ -605,7 +597,7 @@
       );
     }
 
-    /* ===== POST DETAIL MODAL MED KOMMENTARER ===== */
+    /* ===== POST DETAIL MODAL MED KOMMENTARER OCH LÄNK ===== */
     function PostDetailModal({ isOpen, onClose, post, session }) {
       const [comments, setComments] = useState([]);
       const [commentText, setCommentText] = useState('');
@@ -715,6 +707,45 @@
             </div>
           )}
 
+          {/* EXTERN LÄNK - VISAR KLICKBAR LÄNK */}
+          {post.external_link && String(post.external_link).trim() && (
+            <div style={{
+              marginTop: 16,
+              padding: 16,
+              background: 'linear-gradient(135deg, #E0E7FF, #EEF2FF)',
+              borderRadius: 12,
+              border: '1px solid #C7D2FE'
+            }}>
+              <div style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: '#4338CA',
+                marginBottom: 8,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6
+              }}>
+                🔗 Extern länk
+              </div>
+              <a 
+                href={post.external_link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{
+                  color: '#5B21B6',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                  wordBreak: 'break-all',
+                  fontSize: 14
+                }}
+                onMouseOver={(e) => e.target.style.textDecoration = 'underline'}
+                onMouseOut={(e) => e.target.style.textDecoration = 'none'}
+              >
+                {post.external_link}
+              </a>
+            </div>
+          )}
+
           <div style={{marginTop:24,paddingTop:16,borderTop:'1px solid #e5e7eb'}}>
             <ReactionBar post={post} session={session}/>
           </div>
@@ -728,7 +759,6 @@
               </span>
             </h3>
 
-            {/* Kommentarslista */}
             {loadingComments ? (
               <div style={{textAlign:'center',padding:20,color:'var(--text-secondary)'}}>
                 Laddar kommentarer...
@@ -1099,7 +1129,7 @@
       
       const onLogin = (sess)=>{ 
         setSession(sess); 
-        localStorage.setItem('karlskoga_session', JSON.stringify(sess)); 
+        localStorage.setItem('karlskoga_session', JSON.stringify(sess));
       };
       
       const onLogout = ()=>{ 
