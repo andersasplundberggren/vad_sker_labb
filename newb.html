@@ -11,31 +11,102 @@
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    :root{
-  /* var tidigare: #E8ECFF / #F0F4FF */
-  --bg-gradient-1:#D6DBFF;
-  --bg-gradient-2:#E2E7FF;
+ <style>
+  *{margin:0;padding:0;box-sizing:border-box}
 
-  /* gör glaset aningen mindre vitt så kontrasten håller */
-  --glass-bg:rgba(255,255,255,.65);
-  --glass-border:rgba(255,255,255,.85);
+  /* Basvariabler (ljus standard) */
+  :root{
+    --bg-primary:#F5F7FA;
+    --bg-gradient-1:#E8ECFF;
+    --bg-gradient-2:#F0F4FF;
 
-  --bg-primary:#F5F7FA;
-  --text-primary:#1D1D1F;--text-secondary:#6E6E73;
-  --accent-blue:#5863C7;--accent-purple:#7B68EE;--danger:#DC2626;
-  --shadow-sm:0 2px 8px rgba(0,0,0,.04);
-  --shadow-md:0 8px 32px rgba(0,0,0,.08);
-  --shadow-lg:0 20px 60px rgba(0,0,0,.12);
-  --progress-planeras:#F59E0B;
-  --progress-pilot:#3B82F6;
-  --progress-driftsatt:#10B981;
-  body.darker {
-  --bg-gradient-1:#C9D0FF;
-  --bg-gradient-2:#D7DCFF;
-  --glass-bg:rgba(255,255,255,.6);
-}
+    --glass-bg:rgba(255,255,255,.7);
+    --glass-border:rgba(255,255,255,.9);
+
+    --text-primary:#1D1D1F;
+    --text-secondary:#6E6E73;
+
+    --accent-blue:#5863C7;
+    --accent-purple:#7B68EE;
+    --danger:#DC2626;
+
+    --shadow-sm:0 2px 8px rgba(0,0,0,.04);
+    --shadow-md:0 8px 32px rgba(0,0,0,.08);
+    --shadow-lg:0 20px 60px rgba(0,0,0,.12);
+
+    --progress-planeras:#F59E0B;
+    --progress-pilot:#3B82F6;
+    --progress-driftsatt:#10B981;
+  }
+
+  /* ===== Mörkblått tema ===== */
+  body.theme-darkblue{
+    /* mörkblå bakgrund via dina redan använda gradient-variabler */
+    --bg-gradient-1:#0B1220;   /* djup marin */
+    --bg-gradient-2:#0A1A3C;   /* nattblå */
+
+    /* ljusare accenter för kontrast */
+    --accent-blue:#8BA7FF;
+    --accent-purple:#A48BFF;
+
+    /* textfärger på mörk bakgrund */
+    --text-primary:#E9EEF8;
+    --text-secondary:#B9C3D9;
+
+    /* glas på mörkt */
+    --glass-bg:rgba(255,255,255,.08);
+    --glass-border:rgba(255,255,255,.18);
+
+    /* lite starkare skuggor på mörkt */
+    --shadow-sm:0 2px 8px rgba(0,0,0,.25);
+    --shadow-md:0 8px 32px rgba(0,0,0,.35);
+    --shadow-lg:0 20px 60px rgba(0,0,0,.45);
+  }
+
+  /* glöd-blobbar något synliga på mörkt */
+  body.theme-darkblue::before,
+  body.theme-darkblue::after{ opacity:.18; }
+
+  /* kort & modaler mörk ton */
+  body.theme-darkblue .modal-content,
+  body.theme-darkblue .post-card,
+  body.theme-darkblue .search-filters,
+  body.theme-darkblue .create-post-card,
+  body.theme-darkblue .login-card{
+    background:rgba(17,24,39,.9);   /* ~ #111827 */
+    border-color:rgba(255,255,255,.12);
+  }
+
+  /* brödtext på mörkt */
+  body.theme-darkblue .post-summary,
+  body.theme-darkblue .post-detail-content{ color:#D6DEEF; }
+
+  /* spinner synlig på mörkt */
+  body.theme-darkblue .spinner{
+    border:3px solid rgba(255,255,255,.2);
+    border-top-color:var(--accent-blue);
+  }
+
+  /* diskreta linjer */
+  body.theme-darkblue .modal-header,
+  body.theme-darkblue .post-detail-modal .modal-body,
+  body.theme-darkblue .progress-bar{ border-color:rgba(255,255,255,.08); }
+
+  /* badges lite mer “pop” */
+  body.theme-darkblue .category-badge{ filter:saturate(1.1) brightness(1.05); }
+
+  /* inputs på mörkt */
+  body.theme-darkblue .form-input,
+  body.theme-darkblue .search-input,
+  body.theme-darkblue .filter-select{
+    background:rgba(255,255,255,.09);
+    color:var(--text-primary);
+    border-color:rgba(255,255,255,.16);
+  }
+  body.theme-darkblue .form-input::placeholder,
+  body.theme-darkblue .search-input::placeholder{ color:#9AA7C0; }
+</style>
+
 
 }
 
