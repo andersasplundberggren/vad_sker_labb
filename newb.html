@@ -14,10 +14,9 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
 
-    /* Basvariabler (behålls ljusa för kort, header, modaler osv.) */
     :root{
       --bg-primary:#F5F7FA;
-      --bg-gradient-1:#E8ECFF; /* lämnas kvar vid behov */
+      --bg-gradient-1:#E8ECFF;
       --bg-gradient-2:#F0F4FF;
 
       --glass-bg:rgba(255,255,255,.72);
@@ -39,7 +38,6 @@
       --progress-driftsatt:#10B981;
     }
 
-    /* ===== Endast bakgrunden mörkare ===== */
     body{
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
       background:linear-gradient(135deg,#0B1220,#0A1A3C);
@@ -53,7 +51,6 @@
     body::after{width:500px;height:500px;background:radial-gradient(circle,var(--accent-purple),transparent 70%);bottom:-150px;left:-150px;animation-delay:-10s}
     @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-50px) scale(1.1)}66%{transform:translate(-30px,30px) scale(.9)}}
 
-    /* ===== Alla block ljusa / glas ===== */
     .glass-header{
       position:sticky;top:20px;max-width:1200px;margin:20px auto;padding:16px 20px;background:var(--glass-bg);
       backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
@@ -113,7 +110,6 @@
     @media (max-width:1024px){.posts-grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:640px){.posts-grid{grid-template-columns:1fr}}
 
-    /* ===== Läsbarhet på kort ===== */
     .post-card{
       background:var(--glass-bg);
       border:1px solid var(--glass-border);
@@ -131,11 +127,11 @@
     .category-badge{padding:4px 9px;border-radius:999px;color:#fff;font-size:11px;font-weight:900;letter-spacing:.3px}
     .post-summary{
       margin-top:10px;
-      color:#1F2937;                 /* mörkare för kontrast */
-      line-height:1.7;               /* luftigare radavstånd */
-      font-size:15.5px;              /* lite större brödtext */
+      color:#1F2937;
+      line-height:1.7;
+      font-size:15.5px;
       letter-spacing:.1px;
-      text-wrap:pretty;              /* snyggare radbrytning (stöd i moderna browsers) */
+      text-wrap:pretty;
     }
 
     .post-actions{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:12px}
@@ -148,19 +144,18 @@
     .edit-btn{border-color:rgba(88,99,199,.3);color:var(--accent-blue)}
     .edit-btn:hover{background:rgba(88,99,199,.06)}
 
-    /* ===== Tydligare progress bar ===== */
     .progress-bar-container{margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,.08)}
     .progress-label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#4b5563;margin-bottom:8px;display:flex;align-items:center;gap:6px}
     .progress-stages{display:flex;gap:6px}
     .progress-stage{
       flex:1;height:10px;border-radius:999px;
-      background:rgba(17,24,39,.12);             /* tydligare bas */
+      background:rgba(17,24,39,.12);
       position:relative;overflow:hidden;transition:.25s
     }
     .progress-stage.active{
-      background:currentColor;                    /* tar färg från .planeras/.pilot/.driftsatt */
+      background:currentColor;
       box-shadow:inset 0 0 0 1px rgba(255,255,255,.7), inset 0 -1px 2px rgba(0,0,0,.15);
-      transform:translateY(-0.5px);               /* subtil höjning */
+      transform:translateY(-0.5px);
     }
     .progress-stage.planeras{color:var(--progress-planeras)}
     .progress-stage.pilot{color:var(--progress-pilot)}
@@ -211,7 +206,6 @@
     .info-modal-content strong{color:#1F2937;font-weight:800}
     .info-highlight{background:#FEF3C7;padding:12px 16px;border-radius:8px;border-left:3px solid #F59E0B;margin:12px 0;font-size:14px}
 
-    /* ===== HeaderTicker (flip-kub) ===== */
     .header-ticker{
       flex:1; display:flex; justify-content:center; align-items:center;
       padding:0 8px; min-height:28px;
@@ -245,7 +239,6 @@
   <script type="text/babel">
     const { useState, useEffect, useCallback } = React;
 
-    /* ===== KONFIG ===== */
     const API_URL = 'https://script.google.com/macros/s/AKfycbxljCsW1nItz-fgJLc6g6ok3xNiMjMLGpMi-j5X_Npdfvn2_G04mWETtS9mwe3a1Ns/exec';
 
     const PROGRESS_STAGES = {
@@ -254,7 +247,6 @@
       driftsatt: { label: 'Driftsatt', color: '#10B981', icon: '✅' }
     };
 
-    /* ===== API ===== */
     const api = {
       async get(path, params = {}) {
         const url = new URL(API_URL);
@@ -295,7 +287,6 @@
       }
     };
 
-    /* ===== UTIL ===== */
     const isKarlskogaEmail = (email) => {
       if (!email) return false;
       const e = String(email).trim().toLowerCase();
@@ -309,7 +300,6 @@
     };
     const clamp = (s='', n=140) => s.length <= n ? s : s.slice(0, n-1) + '…';
 
-    /* ===== PROGRESS BAR ===== */
     function ProgressBar({ progress }) {
       const stages = ['planeras', 'pilot', 'driftsatt'];
       const currentIndex = stages.indexOf(progress || 'planeras');
@@ -325,7 +315,6 @@
       );
     }
 
-    /* ===== PROGRESS SELECTOR ===== */
     function ProgressSelector({ value, onChange }) {
       return (
         <div>
@@ -345,7 +334,6 @@
       );
     }
 
-    /* ===== FUN LOADER ===== */
     function FunLoader({ interval=1400 }) {
       const lines = [
         'Brygger en prototyp på låg värme…',
@@ -402,7 +390,6 @@
       );
     }
 
-    /* ===== HEADER TICKER (rullande punchline var 20s) ===== */
     function HeaderTicker({ interval=20000 }) {
       const lines = [
         'Brygger en prototyp på låg värme…',
@@ -470,7 +457,6 @@
       );
     }
 
-    /* ===== UI ===== */
     function Loader({ text="Laddar..." }) {
       return (
         <div className="loader">
@@ -532,7 +518,6 @@
       );
     }
 
-    /* ===== LOGIN ===== */
     function LoginPage({ onLogin }) {
       const [email,setEmail] = useState('');
       const [otpSent,setOtpSent] = useState(false);
@@ -583,7 +568,17 @@
               </div>
               <button 
                 onClick={() => setShowInfo(true)}
-                style="background:transparent;border:none;color:#92400E;text-decoration:underline;cursor:pointer;font-size:13px;font-weight:800;padding:0;margin-top:4px"
+                style={{
+                  background:'transparent',
+                  border:'none',
+                  color:'#92400E',
+                  textDecoration:'underline',
+                  cursor:'pointer',
+                  fontSize:13,
+                  fontWeight:800,
+                  padding:0,
+                  marginTop:4
+                }}
               >
                 Läs mer →
               </button>
@@ -617,7 +612,6 @@
       );
     }
 
-    /* ===== SÖK/FILTER ===== */
     function SearchFilters({ searchQuery,setSearchQuery, categoryFilter,setCategoryFilter, authorFilter,setAuthorFilter, categories, onClear }) {
       return (
         <div className="search-filters">
@@ -645,7 +639,6 @@
       );
     }
 
-    /* ===== SKAPA/REDIGERA INLÄGG ===== */
     function CreateEditPostModal({ isOpen, onClose, session, onSuccess, editPost = null }) {
       const [title,setTitle] = useState('');
       const [summary,setSummary] = useState('');
@@ -751,7 +744,6 @@
       );
     }
 
-    /* ===== REAKTIONER ===== */
     function ReactionBar({ post, session, onUpdate }) {
       const [count,setCount] = useState(0);
       const [hasLiked,setHasLiked] = useState(false);
@@ -783,7 +775,6 @@
       );
     }
 
-    /* ===== POST DETALJ ===== */
     function PostDetailModal({ isOpen, onClose, post, session, onEdit }) {
       const [comments, setComments] = useState([]);
       const [commentText, setCommentText] = useState('');
@@ -821,7 +812,7 @@
       return (
         <Modal isOpen={isOpen} onClose={onClose} title={post.title || '(utan rubrik)'}>
           <div className="post-detail-meta">
-            <div className="post-avatar" style={{width:48,height:48,fontSize:18}}>
+            <div className="post-avatar" style={{width:48, height:48, fontSize:18}}>
               {(post.author_email||'?')[0].toUpperCase()}
             </div>
             <div style={{flex:1}}>
@@ -886,8 +877,10 @@
               <div style={{marginBottom:16}}>
                 {comments.map(comment => (
                   <div key={comment.comment_id} style={{background:'rgba(249,250,251,0.9)',border:'1px solid #e5e7eb',borderRadius:12,padding:12,marginBottom:10}}>
-                    <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:6,fontSize:12,color:'#6b7280'}}>
-                      <div style={{width:24,height:24;borderRadius:'50%',background:'#e5e7eb',display:'grid',placeItems:'center',fontSize:11,fontWeight:800,color:'#111827'}}>{(comment.user_email||'?')[0].toUpperCase()}</div>
+                    <div style={{display:'flex', gap:8, alignItems:'center', marginBottom:6, fontSize:12, color:'#6b7280'}}>
+                      <div style={{width:24, height:24, borderRadius:'50%', background:'#e5e7eb', display:'grid', placeItems:'center', fontSize:11, fontWeight:800, color:'#111827'}}>
+                        {(comment.user_email||'?')[0].toUpperCase()}
+                      </div>
                       <span style={{fontWeight:800,color:'#374151'}}>{firstNameFromEmail(comment.user_email)}</span>
                       <span>•</span>
                       <span>{new Date(comment.created_at).toLocaleString('sv-SE')}</span>
@@ -915,7 +908,6 @@
       );
     }
 
-    /* ===== PAPPERSKORG ===== */
     function TrashModal({ isOpen, onClose, session, onChanged }) {
       const [loading,setLoading] = useState(true);
       const [items,setItems] = useState([]);
@@ -970,7 +962,6 @@
       );
     }
 
-    /* ===== HUVUDVY ===== */
     function MainPage({ session, onLogout }) {
       const [posts,setPosts] = useState([]);
       const [categories,setCategories] = useState([]);
@@ -1070,7 +1061,6 @@
               <span className="tagline">Plattformen för initiativ</span>
             </a>
 
-            {/* Rullande punchline mellan tagline och knappar */}
             <HeaderTicker interval={20000} />
 
             <div className="user-info">
@@ -1176,7 +1166,6 @@
       );
     }
 
-    /* ===== APP ===== */
     function App(){
       const [session,setSession] = useState(null);
       const [booting,setBooting] = useState(true);
